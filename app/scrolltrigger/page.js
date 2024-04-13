@@ -28,17 +28,24 @@ export default function page() {
       },
     });
 
-    tl.fromTo(
-      card1.current,
-      { y: 200, duration: 3 },
-      { y: 0, duration: 3 } // Add the missing second argument, which specifies the end values for the animation
-      // to add duration to the animation, add it to both objects, so to the "from"  and to the "to" object 
-      );
+    tl.
+        fromTo(['p', 'h2', 'h3'], {
+            // p, h2, h3 all wrapped in a mask (overflow-hidden)
+            yPercent: 140,
+            stagger: .2,
+        }, {
+            yPercent: 0,
+            stagger: .1,
+        })
+        // fromTo(
+        //     card1.current,
+        //     { y: 200, duration: 3 },
+        //     { y: 0, duration: 3 } // Add the missing second argument, which specifies the end values for the animation
+        //     // to add duration to the animation, add it to both objects, so to the "from"  and to the "to" object 
+        // );
 
 
-    // tl.from(card1.current, {
-    //     y: 200
-    // })
+
   });
 
   return (
