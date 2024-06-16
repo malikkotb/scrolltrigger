@@ -2,6 +2,8 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP);
 
 // run into similar issue using the app directory in NextJS 13. I'm using ScrollTrigger plugin
 // and managed to fix it by moving the gsap.registerPlugin(ScrollTrigger) inside of useEffect/ useIsomorphicLayoutEffect hook.
@@ -20,7 +22,7 @@ export default function page() {
     }
   };
 
-  useLayoutEffect(() => {
+  useGSAP(() => {
     gsap.registerPlugin(ScrollTrigger);
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -40,18 +42,15 @@ export default function page() {
     // p, h2, h3 (so the elements inside the refs array) are all wrapped in a mask (overflow-hidden)
     console.log("Elements to animate:", refs.current);
     if (refs.current.length > 0) {
-      tl.fromTo(
-        refs.current,
-        {
-          yPercent: 140,
-          stagger: 0.1,
-        },
-        {
-          yPercent: 0,
-          // stagger: 0.1,
-        }
-      );
+      tl.from(refs.current, {
+        yPercent: 140,
+        stagger: 0.1,
+      });
     }
+    // {
+    //   yPercent: 0,
+    //   stagger: 0.1,
+    // }
 
     // .fromTo(
     //   card1.current,
