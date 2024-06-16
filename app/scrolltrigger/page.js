@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -11,81 +11,94 @@ export default function page() {
   const middleRef = useRef(null);
   const card1 = useRef(null);
   const card2 = useRef(null);
+  const refs = useRef([]);
+  refs.current = [];
 
-  useEffect(() => {
+  const addtoRefs = (el) => {
+    if (el && !refs.current.includes(el)) {
+      refs.current.push(el);
+    }
+  };
+
+  useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
     const tl = gsap.timeline({
       scrollTrigger: {
         // required parameters:
         // the trigger itself, What is triggering the animation that's about to occurr on this timeline?
         trigger: middleRef.current, // ref to middle section,
-        start: 'top 20%', // 1. value: ('top' or 20% or -20% etc.) of the trigger, 2. value: scrollPosition in the viewport 
-        end: 'bottom+=20% center', // 1. value: 'bottom' of the trigger reaches the 'center' (2. value) of the viewport
+        start: "top 20%", // 1. value: ('top' or 20% or -20% etc.) of the trigger, 2. value: scrollPosition in the viewport
+
+        end: "bottom+=20% center", // 1. value: 'bottom' of the trigger reaches the 'center' (2. value) of the viewport
         // adding bottom+=20% will find the bottom of the trigger-element (middleRef) and it will go 20% past that
+
         // markers: true,
         // scrub: true, // scrub is an animation that is no longer tied to time. It is tied to the scrollPosition
       },
     });
 
-    tl.
-        fromTo(['p', 'h2', 'h3'], {
-            // p, h2, h3 all wrapped in a mask (overflow-hidden)
-            yPercent: 140,
-            stagger: .2,
-        }, {
-            yPercent: 0,
-            stagger: .1,
-        })
-        // fromTo(
-        //     card1.current,
-        //     { y: 200, duration: 3 },
-        //     { y: 0, duration: 3 } // Add the missing second argument, which specifies the end values for the animation
-        //     // to add duration to the animation, add it to both objects, so to the "from"  and to the "to" object 
-        // );
+    // p, h2, h3 (so the elements inside the refs array) are all wrapped in a mask (overflow-hidden)
+    console.log("Elements to animate:", refs.current);
+    if (refs.current.length > 0) {
+      tl.fromTo(
+        refs.current,
+        {
+          yPercent: 140,
+          stagger: 0.1,
+        },
+        {
+          yPercent: 0,
+          // stagger: 0.1,
+        }
+      );
+    }
 
-
-
+    // .fromTo(
+    //   card1.current,
+    //   { y: 200, duration: 3 },
+    //   { y: 0, duration: 3 } // Add the missing second argument, which specifies the end values for the animation
+    //   // to add duration to the animation, add it to both objects, so to the "from"  and to the "to" object
+    // );
   });
 
   return (
     <div className="">
-      <section></section>
+      <section className="h-screen bg-slate-300"></section>
 
       {/* class: middle, used to target specifically as the selector for the scrolltrigger */}
       <section ref={middleRef} className="middle">
         <div className="mask h2">
-          <h2>sophen</h2>
+          <h2 ref={addtoRefs}>sophen</h2>
         </div>
 
         <div className="card card1" ref={card1}>
           <div className="mask">
-            <h3>
+            <h3 ref={addtoRefs}>
               advanced
               <br />
               interactions
             </h3>
           </div>
           <div className="mask">
-            <p>Equipped with the latest tech to create the fanciest interactions.</p>
+            <p ref={addtoRefs}>Equipped with the latest tech to create the fanciest interactions.</p>
           </div>
           <div className="box"></div>
         </div>
         <div className="card card2" ref={card2}>
           <div className="mask">
-            <h3>
+            <h3 ref={addtoRefs}>
               extended
               <br />
               easing
             </h3>
           </div>
           <div className="mask">
-            <p>Utilize our expert flow protocol to extend easing capabilities.</p>
+            <p ref={addtoRefs}>Utilize our expert flow protocol to extend easing capabilities.</p>
           </div>
           <div className="box"></div>
         </div>
       </section>
-      <section></section>
+      <section className="h-screen bg-slate-200"></section>
     </div>
   );
 }

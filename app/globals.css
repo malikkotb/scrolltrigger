@@ -8,10 +8,6 @@ body {
   background-color: #AECABC;
 }
 
-section {
-  height: 100vh;
-}
-
 .mask {
   overflow: hidden;
   height: auto;
@@ -57,6 +53,7 @@ h2 {
   font-size: clamp(2rem, 5vw, 2.5rem);
   font-weight: 400;
   line-height: 2rem;
+  z-index: 1;
 }
 .card p {
   width: 70%;
