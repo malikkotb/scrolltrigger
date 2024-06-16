@@ -11,14 +11,20 @@ gsap.registerPlugin(useGSAP);
 
 export default function page() {
   const middleRef = useRef(null);
-  const card1 = useRef(null);
-  const card2 = useRef(null);
-  const refs = useRef([]);
+  const boxes = useRef([]);
+  boxes.current = [];
+  const refs = useRef([]); // use array for refs for animating multiple refs at once
   refs.current = [];
 
   const addtoRefs = (el) => {
     if (el && !refs.current.includes(el)) {
       refs.current.push(el);
+    }
+  };
+
+  const addtoBoxes = (el) => {
+    if (el && !boxes.current.includes(el)) {
+      boxes.current.push(el);
     }
   };
 
@@ -45,19 +51,8 @@ export default function page() {
       tl.from(refs.current, {
         yPercent: 140,
         stagger: 0.1,
-      });
+      }).from(boxes.current, { scaleY: 0, ease: "elastic.out(1, 0.5)", duration: 2, stagger: 0.3 }, "-=0.3");
     }
-    // {
-    //   yPercent: 0,
-    //   stagger: 0.1,
-    // }
-
-    // .fromTo(
-    //   card1.current,
-    //   { y: 200, duration: 3 },
-    //   { y: 0, duration: 3 } // Add the missing second argument, which specifies the end values for the animation
-    //   // to add duration to the animation, add it to both objects, so to the "from"  and to the "to" object
-    // );
   });
 
   return (
@@ -70,7 +65,7 @@ export default function page() {
           <h2 ref={addtoRefs}>sophen</h2>
         </div>
 
-        <div className="card card1" ref={card1}>
+        <div className="card card1">
           <div className="mask">
             <h3 ref={addtoRefs}>
               advanced
@@ -81,9 +76,9 @@ export default function page() {
           <div className="mask">
             <p ref={addtoRefs}>Equipped with the latest tech to create the fanciest interactions.</p>
           </div>
-          <div className="box"></div>
+          <div ref={addtoBoxes} className="box"></div>
         </div>
-        <div className="card card2" ref={card2}>
+        <div className="card card2">
           <div className="mask">
             <h3 ref={addtoRefs}>
               extended
@@ -94,7 +89,7 @@ export default function page() {
           <div className="mask">
             <p ref={addtoRefs}>Utilize our expert flow protocol to extend easing capabilities.</p>
           </div>
-          <div className="box"></div>
+          <div ref={addtoBoxes} className="box"></div>
         </div>
       </section>
       <section className="h-screen bg-slate-200"></section>
