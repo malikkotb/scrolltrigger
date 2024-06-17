@@ -1,13 +1,9 @@
 "use client";
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(useGSAP);
-
-// run into similar issue using the app directory in NextJS 13. I'm using ScrollTrigger plugin
-// and managed to fix it by moving the gsap.registerPlugin(ScrollTrigger) inside of useEffect/ useIsomorphicLayoutEffect hook.
-// hope this helps
 
 export default function page() {
   const middleRef = useRef(null);
@@ -42,6 +38,21 @@ export default function page() {
 
         // markers: true,
         // scrub: true, // scrub is an animation that is no longer tied to time. It is tied to the scrollPosition
+
+        /* 
+          The 4 states of Toggle Actions:
+
+          onEnter - This action happens when you scroll into a specific section or element for the first time. Scrolling DOWN
+          onLeave - This action happens when you scroll out of a specific section or element for the first time. Scrolling DOWN
+          onEnterBack - This action happens when you scroll back into a specific section or element for the first time. Scrolling UP
+          onLeaveBack - This action happens when you scroll back out of a specific section or element for the first time. Scrolling UP 
+          Values: "play", "pause", "resume", "reset", "restart", "complete", "reverse", and "none" 
+          
+          onEnterBack is opposite of onEnter
+          onLeaveBack is opposite of onLeave
+          
+        */
+        toggleActions: "play reverse play reverse", // this will play the animation when you scroll into the section and reverse it when you scroll out of the section
       },
     });
 
